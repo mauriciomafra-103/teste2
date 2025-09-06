@@ -1,0 +1,29 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import warnings
+import statsmodels.api as sm
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score, mean_squared_error
+warnings.filterwarnings('ignore')
+
+
+def CalculoAceleracaoGravidade():
+  Massa_corpo = float(input('Digite a Massa do Corpo em "kg": '))
+  raio_corpo = float(input('Digite o Raio do Corpo em "m": '))
+  periodo_rotacional = float(input('Digite o Período Rotacional em horas: '))
+  precisao_angulo = float(input('Digite a Precisão dos Ângulos em graus: '))
+  G = 6.6743e-11                                            # Constante Gravitacional (m³/(kg*s²))
+  g = (G * Massa_corpo) / (raio_corpo**2)                   # Massa em kg
+  T = periodo_rotacional * 60 * 60                          # Período (s)
+  V = 2 * np.pi * d_terra/ T                                # Velocidade de Translação sem Coneso
+  angulos = np.arange(0, 90, precisao_angulo) * np.pi / 180 # Lista de ângulos
+  a = (V * np.cos(angulos)) ** 2 / d_terra                  # Aceleração Centrípeta
+  gravidade_corrigida = g - a                               # Correção da Gravidade pela rotação do corpo
+  df = pd.DataFrame({'Latitudes (rad)': angulos,            # DataFrame
+                                  'Latitudes (°)': angulos * 180 / np.pi,
+                                  'Aceleracao Centripeta (m/s²)': a,
+                                  'Gravidade (m/s²)': gravidade_corrigida})
+  return df
